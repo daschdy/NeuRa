@@ -1,0 +1,80 @@
+\documentclass[]{i3thesis}
+% options:
+% [germanthesis] - Thesis is written in German
+% [plainunnumbered] - Don't print numbers on plain pages
+% [earlydraft] - Settings for quick draft printouts
+% [watermark] - Print current time/date at bottom of each page
+% [phdthesis] - switch to PhD thesis style
+% [twoside] - double sided
+
+\usepackage{multirow}
+\usepackage{floatflt}
+%\usepackage[babel=true]{csquotes}
+%\usepackage[backend=biber,style=ieee]{biblatex}
+
+\author{Carsten Demel}
+\title{Accurate Estimation of Non-Functional Properties in Parallel Processing 
+Architectures Utilizing Synthesis-Databases}
+\thesistype{Masterarbeit im Fach Informations- und Kommunikationstechnik}
+\thesiscite{Master's Thesis~(Masterarbeit)}
+\birthday{04. März 1987}
+\birthplace{Nürnberg}
+\thesisstart{1. September 2014}
+\advisors{Dipl.-Inf. Marc Reichenbach}
+
+\addbibresource{thesis.bib}
+\graphicspath{{images/},{pictures/}}
+
+%%%---------ADD EVALUATION-----------------------------------
+%\newcommand*{\WITHEVALUATION}{}%
+%%%
+\begin{document}
+%%%----------------------------------------------------------
+
+\pagenumbering{roman}
+
+\maketitle
+
+% Uncomment \input macros as required
+%\input{abstract}
+\acresetall
+
+\cleardoublepage
+\tableofcontents
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+\input{introduction}
+
+%\input{fundamentals}
+
+%\input{method}
+
+%\input{implementation}
+
+\ifdefined\WITHEVALUATION
+%\input{evaluation}
+\fi
+
+%\input{conclusion}
+
+\cleardoublepage
+
+%\input{glossary}
+\clearpage
+
+\listoffigures
+\clearpage
+
+\listoftables
+\clearpage
+
+\appendix
+%\include{appendix_a}
+%\include{curriculum_vitae}
+
+%\printbibliography
+\MakeBibliography[nosplit]
+
+\end{document}
