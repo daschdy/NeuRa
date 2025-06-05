@@ -1,0 +1,143 @@
+---
+title: "Neuartige Rechenarchitektur - AXI"
+date: 2025-05-06
+tag: "neura"
+[comment]: # use "gf" to follow links
+---
+
+# AXI - Advanced eXtensible Interface
+- [AMBA AXI4 Interface Protocol](https://www.amd.com/de/products/adaptive-socs-and-fpgas/intellectual-property/axi.html#tabs-ceeab8b2b8-item-766c793914-tab)
+- higher productivity:
+    - consolidates broad array of interfaces into one
+    - makes integrating IP from different domains easier
+    - saves design effort
+- greater flexibility:
+    - supports embedded, DSP and Logic Edition users
+    - tailor the interconnect to meet system goals: Performance, power, area
+    - key benefits:
+- consistent
+    - fully specified
+    - standardized
+    - interface-decoupled
+    - extendable
+- difference to AXI3:
+    - support for burst length up to 256 beats
+    - Quality of Service signaling
+    - Support for multiple region interfaces
+
+- [Introduction to AMBA AXI4](https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/Learn%20the%20Architecture/102202_0100_01_Introduction_to_AMBA_AXI.pdf?revision=369ad681-f926-47b0-81be-42813d39e132)
+- Advanced Microcontroller Bus Architecture (AMBA)
+- What is AMBA?
+    - open-standard, on-chip interconnect specification for the connection and management of functional blocks in system-on-a-chip (SoC) designs
+    - define how functional blocks communicate with each other
+- Why use AMBA?
+    - efficient IP reuse
+    - flexibility
+    - compatibility
+    - support
+    - related to bus interface performance (main characteristics):
+    - latency
+    - bandwidth
+- AXI protocol overview
+    - AXX is an interface specification that defines the inferface of IP blocks, rather than the interconnect itself
+    - AXI Master - \[AXI Slave, AXI Interconnect component, AXI Master\] - AXI Slave
+    - In AXI4 there are only two AXI interface types: Master and Slave, which are symmetrical
+    - direct connections between AXI Masters and AXI Slaves gives maximum bandwidth with no extra logic
+    - only one single protocol to validate
+    - AXI Protocol defines the signals and timing of the point-to-point connections between masters and slaves $\rarr$ it is a point-to-point specification, not a bus specification
+- AXI channels:
+    1. Write Address (AW)
+    2. Write Data (W)
+    3. Write Response (B = Buffered)
+    4. Read Address (AR)
+    5. Read Data (R)
+    - Write operations:
+        - The master sends an address on the AW channel and transfer data on the W channel to the slave
+        - The slave writes the received data to the specified address. Once the slave has completed the write operation, it responds with a message to the master on the B channel
+    - Read operations:
+        - The master sends an address on the AR channel to the slave
+        - The slave sends the data from the requested address to the master on the R channel
+        - The slave can also return an error message on the R channel. An error occurs if, for example, the address is not valid, or the data is corrupted, or the access does not have the right security permission
+        - Seperate address and data channels for read and write operations helps to maximize the bandwidith of the interface 
+    - There is not timing relationship between the channels. Read sequence can happen at the same time as a write sequence
+- Main AXI features
+    - Independent read and write channels
+    - Multiple outstanding addresses
+    - No strict timing relationship between address and data operations
+    - Support for unaligned data transfers
+    - Out-of-order transaction completion
+    - Burst transactions based on start address
+- Channel Handshake:
+    - all channels share the same handshare mechanism that is based one the VALID and READY signals
+    - VALID signal goes from the source to the destination and READY goes from the destination to the source
+- Differences between transfers and transactions:
+    - a **transfer** is a single exchange of information, with one VALID and READY handshake
+    - a **transaction** is an entire burst of transfers, containing an address transfer, one or more data transfers, and, for write sequences, a response transfer 
+- ... (exclusive transaction examples)
+- Data size, length:
+    - each read and write transaction has attributes that specify the data length, sire and burst signal attributes for that transaction
+    - x stands for write and read
+    - AxLEN $\rarr$ for AxLEN\[7:0\] has 8 bits, which specifies a range of 1-256 data transfers in a transaction
+    - AxSize\[2:0\] describes the maximum number of bytes to transfer in each data transfer. Three bits of encoding indicate 1,2,4,8, ..., 128 bytes per transfer
+    - AxBurst\[1:0\] describes the burst type of the transaction: fixed, incrementing or wrapping
+- burst type:
+    - FIXED - 0x00 - reads the same address repeatedly. Useful for FIFOs
+    - INCR - 0x01 - incrementing burst. Useful for block transfers
+    - WRAP - 0x10 - wrapping burat. Commonly used for cache line accesses
+    - RESERVED - 0x11 - not for use
+- Protection level support:
+    - AXI provides access permission signals, AWPROT and ARPROT, that can protect againt illegal transactions downstream in the system
+    - if a transaction does not have the correct level of protection, a memory controller could refuse read or write access by using these signals
+    - AxPROT\[0\] (P) identifies an access as unprivileged or privileged
+    - AxPROT\[1\] (NS) identifies an access as Secure or Non-secure
+    - AxPROT\[2\] (I) indicates whether the transaction is an instruction access or a data access
+- Cache support:
+    - modern SoC systems often contain caches that are placed in several points of the system
+    - AWCACHE and ARCACHE signals indicate how transactions are required to progress through a system
+    - AxCACHE\[0\] (B): the bufferable bit
+    - AxCACHE\[1\]: the modifiable bit
+    - AxCACHE\[2\]: the RA bit
+    - AxCACHE\[3\]: the WA bit
+- Response signaling
+    - provides response signaling for both read and write transactions
+    - for read transactions, the response information from the slave is signaled one the read data channel using RRESP
+    - for write transactions, the response information is signaled on the write response channel using BRESP
+    - RRESP and BRESP are both composed of two bits and the encoding of these signals can transfer for responses (00 = OKAY, 01 = EXOKAY, 10 = SLVERR, 11 = DECERR)
+- Write Data Strobes
+    - signal is used by a master to tell a slave which bytes of the data bus are required
+    - useful for cache accesses for efficient movement of sparse data arrays
+    - in addition you can optimize data transfers using unaligned start addresses
+    - one strobe bit per byte on the data bus. These bits make the WSTRB signal
+    - master must ensure, that the write strobes are set to 1 only for byte lanes that contain valid data
+- Atomic accesses with the lock signal
+    - see also chapter 6
+    - AxLOCK signal is used to indicate when atomic accesses are being performed
+    - AXI Protocol supports two types of atomic accesses:
+        - Locked accesses: A locked transfer locks the channel, which remains locked until an unlocked transfer is generated. Locked accesses are similar to the mechanism supported with the AHB protocol
+        - Exclusive accesses: Exclusive accesses are more efficient then locked transactions, and they allow multiple masters to access a slave at the same time
+    - AXI4:
+        - 0b0 - normal access
+        - 0b1 - locked access
+- Quality of Service (QoS)
+    - extra signals to support QoS
+    - allows to prioritize transactions allowing to improve system performance by ensuring that more important transactions are dealt with higher priority
+    - two signals:
+        - AWQOS: Sent on Write Address channel for each write transaction
+        - ARQOS: Sent on Read Address channel for each read transaction
+    - both signals are 4 bits wide, where the value 0x0 indicates the lowest priority and 0xF indicates the highest priority
+- Region signaling
+    - optional feature
+    - single physical interface on a slave can provide multiple logical interfaces. Each logical interface can have a different location in the system address map
+    - when used, slave does not have to support the address decode between different logical interfaces
+    - 4-bit region: AWREGION and ARREGION
+    - can uniquely identify up to 16 different regions
+- User signals
+    - option to include a set of user-defined signals
+    - can be used on each channel to transfer extra custom control information between master and slave components
+    - width of the User signals is defined by the implementation and can be different on each channel
+- Dependencies
+    - WLAST transfer must be complete before BVALID is asserted
+    - RVALID cannot be asserted until ARADDR has been transferred
+    - WVALID can assert before AWVALID
+
+
