@@ -1,10 +1,10 @@
 ---
-title: Flexible and Efficient QoS Provisioning in AXI4-Based Network-on-Chip Architectures
+title: "Flexible and Efficient QoS Provisioning in AXI4-Based Network-on-Chip Architectures"
 date: 2025-05-05
 tag: "neura"
 ---
 
-# Notes 
+# Notes
 ## Introduction
 - AXI4 (Advanced eXtensible Interface 4) is the fourth generation of the AMBA (Advanced Microcontroller Bus Architecture) protocol developed by ARM, which supports high-performance, high-frequency system designs
 - It uses five individual channels for communication between master and slave interfaces
