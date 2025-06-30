@@ -6,6 +6,8 @@ tag: "neura"
 ---
 
 # Notes
+- 8 - 12 Seiten (Text)
+
 ## Paper Summary
 [Flexible and Efficient QoS Provisioning in AXI4-Based NoC Architectures](neura_paper.md)
 
@@ -62,7 +64,7 @@ tag: "neura"
         - The master sends an address on the AR channel to the slave
         - The slave sends the data from the requested address to the master on the R channel
         - The slave can also return an error message on the R channel. An error occurs if, for example, the address is not valid, or the data is corrupted, or the access does not have the right security permission
-        - Seperate address and data channels for read and write operations helps to maximize the bandwidith of the interface 
+        - Seperate address and data channels for read and write operations helps to maximize the bandwidith of the interface
     - There is not timing relationship between the channels. Read sequence can happen at the same time as a write sequence
 - Main AXI features
     - Independent read and write channels
@@ -76,7 +78,7 @@ tag: "neura"
     - VALID signal goes from the source to the destination and READY goes from the destination to the source
 - Differences between transfers and transactions:
     - a **transfer** is a single exchange of information, with one VALID and READY handshake
-    - a **transaction** is an entire burst of transfers, containing an address transfer, one or more data transfers, and, for write sequences, a response transfer 
+    - a **transaction** is an entire burst of transfers, containing an address transfer, one or more data transfers, and, for write sequences, a response transfer
 - ... (exclusive transaction examples)
 - Data size, length:
     - each read and write transaction has attributes that specify the data length, sire and burst signal attributes for that transaction
@@ -234,7 +236,7 @@ tag: "neura"
         - controlling congestion so that the device sends the highest priority traffic based on scheduler priorities
         - controlling packet loss using random early detection (RED) algorithms, so that the device knows the packets to drop or process
 - How Does QoS Work?
-    - A network device, such as a routers or switch, differentiates traffic as follows: 
+    - A network device, such as a routers or switch, differentiates traffic as follows:
         1. It receives packets on its ingress interface, examines the packets, and classifies the traffic into groups calles classes of service (CoS)
         2. If an optional policer is configured, it limits or assigns the traffic to a different class
         3. Queues hold packets while they await transmission resources
@@ -265,6 +267,4 @@ tag: "neura"
 - Evolution Of Interconnects
     - Shared Buses: Such as ARM's AMBA bus and IBM's CoreConnect are the commonly used communication mechanisms in SoCs. They support a modular design approach that uses standard interfaces and allows IP reusem but shared but structure becomes a performance bottleneck as the system bandwidth requirements scale-up
     - Hierarchical Bus: Would involve using multiple buses or bus segments to alleviate the load on the main bus. This hierarchical structure would allow for local communication between modules on the same bus segment without causing congestion to the rest of the bus. The disadvantages to this approach are its reduced flexibility and scalability and its complication of the design process. The more cores are attached to the bus, the harder it is to accomplish time closure and QoS
-    - Bus Matrix: A full crossbar system is an alternative for on-chip bus communication. Still, as the number of participating system rises, the complexity of wires could be dominant over the logic part. Also, these interconnect logic do not decouble activities generally classified as transport, transaction and physical layer. Hence, when we need any system upgrade, the interface design is affected, and all connected blocks affected. Even though computation and storage benefit from the sub-micron technology uses smaller logic cells and memory, the energy for commmunication is not scalling down. Instead, the crosstalk effects, electromigration, and interconnect delay are affecting timing closure 
-
-
+    - Bus Matrix: A full crossbar system is an alternative for on-chip bus communication. Still, as the number of participating system rises, the complexity of wires could be dominant over the logic part. Also, these interconnect logic do not decouble activities generally classified as transport, transaction and physical layer. Hence, when we need any system upgrade, the interface design is affected, and all connected blocks affected. Even though computation and storage benefit from the sub-micron technology uses smaller logic cells and memory, the energy for commmunication is not scalling down. Instead, the crosstalk effects, electromigration, and interconnect delay are affecting timing closure

@@ -5,7 +5,13 @@ tag: "neura"
 [comment]: # use "gf" to follow links
 ---
 
-# Outline
+# Präsentation
+- nur das Wesentliche
+- Leute sollen verstehen worum es geht
+    - Was ist NoC?
+    - QoS Umsetzung
+
+# Outline Paper
 1. Introduction
     - Worum geht es:
         - Seminar "Neuartige Rechnerarchitekturen"
@@ -24,7 +30,7 @@ tag: "neura"
     - Überblick über NoC
     - AXI4-Protokoll
     - QoS-Konzepte
-    - Vergleichbare Literaturansätze
+    - Vergleichbare Literaturansätze (nicht umfangreich)
 3. Architekturübersicht
     - Gesamtstruktur der vorgeschlagenen NoC-Architektur
     - Rolle der zwei Subnetzwerken (VC und TDM)
@@ -35,3 +41,5 @@ tag: "neura"
         - Traffic Converter: Funktion und Nutzen
 4. Resultate vom Experiment
 5. Fazit
+    - Wertung des Paper/ Schwachstellen der Analyse
+    - Kritische Reflexion
