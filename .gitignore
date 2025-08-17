@@ -1,2 +1,4 @@
 /py/.env
 /py/.venv/
+
+.DS_Store
