@@ -1,5 +1,3 @@
-\chapter{Hintergrund und Stand der Technik}
-
 \section{Network-On-Chip (NoC)}
 A network-on-chip is a communication system used in modern system-on-chip (SoC) architectures to efficiently connect various components (e.g., processors, memory, and specialized units). Instead of using classic buses or point-to-point connections, NoC relies on a network-like communication principle inspired by computer networks or high-performance computers. \TODO{Add References}
 
@@ -40,7 +38,7 @@ Additionally, different buffering strategies exist within these approaches, incl
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\textwidth]{img/NoC Protocol.png}
-    \caption{NoC-Protokol~\cite{lee_low-power_2006}}\label{fig:NOC_Protocol}
+    \caption{NoC-Protocol~\cite{lee_low-power_2006}}\label{fig:NOC_Protocol}
 \end{figure}
 
 The network protocol for the Network-on-Chip (NoC) presented in \cite{lee_low-power_2006} was developed with the goal of enabling both high data transfer efficiency and low power consumption. The basis is a flexibly structured packet format with a modular header, which can be divided into a full or compact header as needed. The header includes, among other things, information about packet priority (Pr), transfer mode (Read/Write), burst length (BL), source and destination addresses (Source/Dest ID), as well as optional fields such as address or data activation (A, D) and an acknowledge request (AC).
@@ -54,9 +52,3 @@ However, it should be noted that the protocol presented here is only one example
 A Network-on-Chip (NoC) offers several advantages over traditional bus-based communication structures: It enables scalable and parallel data transfer between many processor cores or components, significantly improving performance and efficiency in complex systems. Moreover, the structured interconnection enhances fault tolerance and bandwidth while reducing latency.
 
 However, NoCs also bring disadvantages, such as increased design and implementation effort, as well as additional chip area and power consumption. In particular, the complexity of routing and control can complicate development and validation. Overall, however, in modern multicore systems the advantages of NoCs usually outweigh the disadvantages, as they provide a flexible and high-performance communication infrastructure.
-
-\section{AXI4-Protokoll}
-
-\section{QoS-Konzepte}
-
-\section{Vergleichbare Literaturansätze}
