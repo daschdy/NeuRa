@@ -1,1 +1,75 @@
-\section{AXI4-Protokoll}
+\section{AMBA & AXI4 Protocol}
+
+Advanced Microcontroller Bus Architecture (AMBA) is an open-standard, on-chip interconnect specification for the connection and management of functional blocks in system-on-a-chip (SoC) designs. The AMBA standard was first introduced by ARM in 1996 to provide a scalable and reusable on-chip communication interface for System-on-Chip (SoC) designs. Over time, AMBA evolved through several generations to meet increasing system complexity and performance requirements.
+
+\begin{itemize}
+    \item \textbf{AMBA 1 (1996)} – Introduced basic buses like APB (Advanced Peripheral Bus) and ASB (Advanced System Bus) for simple communication.
+    \item \textbf{AMBA 2 (1999)} – Added the AHB (Advanced High-performance Bus), offering higher performance for pipelined systems.
+    \item \textbf{AMBA 3 (2003)} – Introduced AXI3 (Advanced eXtensible Interface), supporting out-of-order transactions and multiple outstanding operations.
+    \item \textbf{AMBA 4 (2010)} – Introduced AXI4, which includes:
+        \begin{itemize}
+            \item \textbf{AXI4} – Full-featured interface with support for burst transactions.
+            \item \textbf{AXI4-Lite} – Simplified, single transaction interface used for register-mapped control.
+            \item \textbf{AXI4-Stream} – Designed for high-speed data streaming without address lines.
+        \end{itemize}
+    \item \textbf{AMBA 5 (2013+)} – Introduced ACE (AXI Coherency Extensions) and CHI (Coherent Hub Interface) for multicore and cache-coherent systems.
+\end{itemize}
+
+Among the various interfaces introduced in the AMBA family, the \textbf{AXI4 (Advanced eXtensible Interface 4)} protocol—introduced with AMBA 4—has become the de facto standard for high-performance interconnects in modern SoC designs. AXI4 provides a flexible, high-bandwidth, and scalable communication mechanism suitable for a wide range of applications, from simple register access to complex burst-based memory transfers.
+
+The AXI4 (Advanced eXtensible Interface 4) protocol is a key part of the AMBA specification, designed for high-performance, high-frequency system designs. It provides a point-to-point interface between master and slave components, supporting efficient burst-based data transfers with minimal latency and flexible timing. AXI4 separates read and write operations into independent channels, allowing simultaneous or decoupled transactions in both directions. This decoupling enables high throughput and efficient use of bus bandwidth, which is critical in complex SoC architectures.
+
+The AXI4 protocol defines five distinct channels to support read and write transactions. Each channel consists of a set of signals that are valid for a single transfer direction. The channels are:
+
+\begin{enumerate}
+    \item \textbf{Write Address Channel (AW)}: Carries the address and control information for write transactions from the master to the slave.
+    \item \textbf{Write Data Channel (W)}: Carries the actual data to be written to the slave.
+    \item \textbf{Write Response Channel (B)}: Sends the status of the write transaction back from the slave to the master. The “B” stands for “buffered.”
+    \item \textbf{Read Address Channel (AR)}: Carries the address and control information for read transactions from the master to the slave.
+    \item \textbf{Read Data Channel (R)}: Carries the data read from the slave back to the master, along with response signals.
+\end{enumerate}
+
+In a write transaction, the process typically follows these steps:
+
+\begin{itemize}
+    \item The master initiates the transaction by sending the target address and control signals on the \textbf{AW} channel.
+    \item The data associated with the write is sent separately on the \textbf{W} channel. The data and address are transmitted independently and may arrive at the slave at different times.
+    \item Once the slave has successfully received and processed the data, it responds with a write response signal on the \textbf{B} channel, indicating the completion status (e.g., OKAY, ERROR).
+\end{itemize}
+
+Read operations are similar but use separate channels:
+
+\begin{itemize}
+    \item The master sends the read address and control information on the \textbf{AR} channel.
+    \item The slave responds with the requested data on the \textbf{R} channel.
+    \item In addition to the data, the \textbf{R} channel also includes response signals, which may indicate errors such as invalid address access, corrupted data, or failed permission checks.
+\end{itemize}
+
+The separation of address and data channels for both read and write operations allows the interface to achieve high throughput and pipelined transaction handling.
+
+All AXI channels use a handshake protocol based on \texttt{VALID} and \texttt{READY} signals. The master asserts \texttt{VALID} when data is ready to transfer, and the slave asserts \texttt{READY} when it can accept data. Data is transferred only when both signals are high, allowing flexible timing and preventing data loss.
+
+
+Each transaction includes attributes that define its behavior, such as the number of data transfers, the size of each transfer, and the burst type. These attributes are encoded in the following control signals (where \texttt{x} denotes either \texttt{AR} or \texttt{AW}):
+
+\begin{itemize}
+    \item \textbf{AxLEN} (\texttt{[7:0]}): Specifies the number of data transfers in a burst. The value can range from 0 to 255, which corresponds to 1 to 256 data transfers.
+    \item \textbf{AxSIZE} (\texttt{[2:0]}): Defines the size of each data transfer. The encoded values indicate the number of bytes per transfer: \texttt{000} = 1 byte, \texttt{001} = 2 bytes, ..., up to \texttt{111} = 128 bytes.
+    \item \textbf{AxBURST} (\texttt{[1:0]}): Indicates the burst type, which controls how addresses are generated within a burst.
+\end{itemize}
+
+AXI4 supports three main types of burst transfers, as defined by the \texttt{AxBURST} signal:
+
+\begin{itemize}
+    \item \textbf{FIXED (0b00)}: The address remains constant for every data transfer. This is commonly used for accesses to FIFO buffers or peripheral registers.
+    \item \textbf{INCR (0b01)}: The address increments by the transfer size for each data beat. This mode is ideal for sequential memory accesses or block transfers.
+    \item \textbf{WRAP (0b10)}: Similar to incrementing bursts, but the address wraps around to a lower value when a certain boundary is reached. This mode is often used for cache line fills or circular buffers.
+    \item \textbf{RESERVED (0b11)}: This encoding is reserved and should not be used.
+\end{itemize}
+
+To summarize, AXI4 incorporates several key features that make it well-suited for high-performance systems. One of its core advantages is the use of independent read and write channels, which allows these operations to be carried out concurrently, thereby increasing overall throughput. Additionally, AXI4 supports multiple outstanding transactions, enabling masters to issue several requests without needing to wait for prior transactions to complete. The protocol also permits out-of-order completion of responses, granting flexibility in how slaves manage and return data. Efficient data transfer is further achieved through the use of burst transactions, which allow multiple data beats to be sent in a single transfer. Moreover, AXI4 does not impose a strict timing relationship between the address and data phases, offering greater design flexibility. Finally, all communication channels rely on a straightforward two-way handshake protocol, utilizing the \texttt{VALID} and \texttt{READY} signals for effective flow control.
+
+AXI4-Lite is a simplified subset of AXI4, supporting only single, non-burst transactions. It is primarily used for register access and control/status registers, where low complexity and minimal logic overhead are preferred.
+
+Unlike AXI4 and AXI4-Lite, AXI4-Stream is designed for unidirectional, high-throughput data streaming without address phases. It is optimized for continuous data flow, commonly used in interfaces such as FIFO transfers, DSP data paths, or serial communication modules. The protocol uses \texttt{TVALID}, \texttt{TREADY}, and sideband signals like \texttt{TLAST} to mark packet boundaries.
+
