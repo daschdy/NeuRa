@@ -1,4 +1,5 @@
 /py/.env
 /py/.venv/
+/unpublished/
 
 .DS_Store
