@@ -490,9 +490,9 @@
 }{%
 	\href{http://www3.cs.fau.de/}{www3.cs.fau.de}%
 }{%
-	\includegraphics{i3/logo-tf_neu}%
+	\includegraphics[scale=0.25]{i3/logo-tf}%
 }{%
-	\includegraphics{i3/logo-fau_neu}%
+	\includegraphics[scale=0.2]{i3/logo-fau}%
 }
 
 % Title pages use single line spacing, no parindent and no parskips
