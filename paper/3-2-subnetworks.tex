@@ -1,1 +1,13 @@
-\section{Role of two Subnetworks}
+\section{Role of two Subnetworks (VC and TDM)}
+
+\TODO{Start here and with p. 1527 chapt. B}
+
+To efficiently support heterogeneous QoS requirements, the NoC employs a dual-subnetwork structure:
+
+\begin{itemize}
+    \item The \textbf{VC subnetwork} (Virtual Channel) is used for \ref{LCS} and \ref{URS} packets. It provides low-latency transmission for critical traffic and fair, best-effort service for background traffic. Several flow control schemes are supported, ranging from strictly separated VCs for different QoS classes to shared VC approaches with priority arbitration.
+    \item The \textbf{TDM subnetwork} (Time Division Multiplexing) is dedicated to \ref{GRS} packets. By pre-allocating both paths and time slots, it guarantees bandwidth and ensures predictable latency for streaming traffic.
+\end{itemize}
+
+The separation into VC and TDM subnetworks prevents interference between different QoS services and allows resources to be allocated more effectively.
+ 
