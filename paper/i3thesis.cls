@@ -372,7 +372,7 @@
 	\renewcommand{\lstlistlistingname}{List of Listings}
 }
 \lstset{
-	language=C,
+	language=C,      
 	frame=lines,
 	framesep=5pt,
 	captionpos=b,
