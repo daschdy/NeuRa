@@ -16,6 +16,7 @@ However, as bandwidth demands increased, shared-bus systems became a bottleneck.
 Another alternative was the bus matrix — a full crossbar system that allows parallel connections between components. However, as system size grows, the complexity of wiring also increases and can eventually improve the effort required for the logic itself. Moreover, such systems do not clearly separate transport, transaction, and physical layers. Therefore, when a system upgrade is needed, it often affects the entire interface design and all connected blocks.
 Against this background, some researchers in the early 2000s proposed implementing communication between different processing units on a chip via a predefined platform—an integrated switching network known as Network-on-Chip (NoC). NoCs fulfill key requirements of modern SoCs: reusability, scalable bandwidth, and energy efficiency. NoCs have replaced wired connections and instead utilize intelligent network infrastructures. They draw on models, techniques, and tools from network communication, thereby replacing fixed wiring with packet-based communication.\TODO{ar}
 
+
 \sh{NoC Components}
 A NoC consists of the following three essential components:
 \begin{enumerate}
@@ -24,15 +25,18 @@ A NoC consists of the following three essential components:
     \item \textbf{Network Adapters (NA)} or \textbf{Network Interfaces (NI)} serve as the logical interface between the IP cores and the network (NoC). They are necessary because the internal communication mechanisms of an IP core (e.g., bus protocols like AXI) are typically not directly compatible with the packet-based mechanisms of a NoC.
 \end{enumerate}
 
+
 \sh{Topology}
 Network-on-Chip (NoC) can be characterized by the structure of their router connections. This structure is also referred to as the \textit{topology} and is typically represented as a graph $G(N, C)$, where $N$ denotes the set of routers (nodes) and $C$ the set of channels (edges). A fundamental distinction is made between \textit{direct} and \textit{indirect topology}.
 In the case of \textit{direct topology}, each router is assigned exactly one processor. This pair is considered a node in the network. Each node is connected to a fixed number of neighbors, and messages are transported over one or more intermediate nodes (routers). Commonly used structures include n-dimensional grids, mesh topologies, or torus topologies (also called k-ary n-cubes).
 In \textit{indirect topology}, not all routers are directly connected to a processing unit, as is the case in the direct model. Some routers serve solely to route messages through the network, while others are responsible for control and management functions. These so-called logic routers act as sources or targets of messages.
 
+
 \sh{Routing}
 In NoC architectures, routing is a central component because it determines how data packets are transmitted between individual nodes. Fundamentally, routing algorithms can be divided into two main categories: deterministic and adaptive routing. In \textit{deterministic routing}, the path a packet takes from the source to the destination is predefined and remains unchanged regardless of the current network load or other conditions. Well-known deterministic methods include XY routing and Dimension-Order Routing (DOR). In contrast, \textit{adaptive routing} allows dynamic path adjustments based on the current state of the network. This enables, for example, the avoidance of congestion or faulty connections. Adaptive algorithms include DyAD (Dynamic Adaptive Deterministic) as well as Odd-Even routing.
 
 Complementing these are \textit{congestion-aware routing algorithms} that specifically consider the current network load to achieve an even distribution of data traffic. A special subcategory are so-called \textit{ant colony-based algorithms}, which use concepts from swarm intelligence. Here, paths are learned and continuously optimized using virtual pheromone trails, enabling flexible and adaptive route finding.
+
 
 \sh{Flow Control}
 Another essential aspect in NoC systems is the so-called flow control, which defines how available resources such as bandwidth or buffer memory are assigned to individual data packets. The goal is to ensure efficient resource usage and thereby optimize the overall network throughput. Fundamentally, one distinguishes between bufferless and buffered flow control. In \textit{bufferless flow control}, there are no or only very limited intermediate storage; data packets that cannot be forwarded immediately are either discarded or rerouted via alternative paths. A typical example is circuit switching, where a fixed path through the network is reserved prior to data transmission. In contrast, buffered flow control temporarily stores data packets when the desired output channel is occupied or forwarding is otherwise delayed. This method increases the flexibility of data transmission and reduces the likelihood of packet loss or rerouting, but entails higher hardware complexity and energy consumption due to the additional buffer resources that must be provided and managed.
@@ -47,6 +51,7 @@ Additionally, different buffering strategies exist within these approaches, incl
     \caption{NoC-Protocol~\cite{lee_low-power_2006}}\label{fig:NOC_Protocol}
 \end{figure}
 
+
 \sh{Protocol}
 The network protocol for the Network-on-Chip (NoC) presented in \cite{lee_low-power_2006} was developed with the goal of enabling both high data transfer efficiency and low power consumption. The basis is a flexibly structured packet format with a modular header, which can be divided into a full or compact header as needed. The header includes, among other things, information about packet priority (Pr), transfer mode (Read/Write), burst length (BL), source and destination addresses (Source/Dest ID), as well as optional fields such as address or data activation (A, D) and an acknowledge request (AC).
 
@@ -55,6 +60,7 @@ Burst communication typically occurs with a burst length of 1, 2, 4, or 8 transf
 The structure of the protocol allows minimizing overhead and reducing energy consumption by using compact headers and selective field activation. Particularly noteworthy is the combination of efficient data transfer, scalability, and hardware friendliness, which makes this protocol well suited for use in high-performance and energy-optimized system-on-chip architectures.
 
 However, it should be noted that the protocol presented here is only one example from the multitude of existing NoC communication protocols. Depending on the use case and system requirements, different protocols exist that are optimized, for example, for different flow control mechanisms, routing strategies, or real-time requirements. NoC protocols vary significantly in header structure, burst support, energy efficiency, and error handling to meet specific design goals. Therefore, the choice of a NoC protocol is always adapted to the particular requirements of the target system.
+
 
 \sh{Advantages and Disadvantages}
 A Network-on-Chip (NoC) offers several advantages over traditional bus-based communication structures: It enables scalable and parallel data transfer between many processor cores or components, significantly improving performance and efficiency in complex systems. Moreover, the structured interconnection enhances fault tolerance and bandwidth while reducing latency.

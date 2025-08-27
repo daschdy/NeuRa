@@ -18,8 +18,10 @@ Advanced Microcontroller Bus Architecture (AMBA) is an open-standard, on-chip in
 
 Among the various interfaces introduced in the AMBA family, the \textbf{AXI4 (Advanced eXtensible Interface 4)} protocol — introduced with AMBA 4 — has become the de facto standard for high-performance interconnects in modern SoC designs. AXI4 provides a flexible, high-bandwidth, and scalable communication mechanism suitable for a wide range of applications, from simple register access to complex burst-based memory transfers.
 
+
 \sh{AXI4 Protocol}
 The AXI4 (Advanced eXtensible Interface 4) protocol is a key part of the AMBA specification, designed for high-performance, high-frequency system designs. It provides a point-to-point interface between master and slave components, supporting efficient burst-based data transfers with minimal latency and flexible timing. AXI4 separates read and write operations into independent channels, allowing simultaneous or decoupled transactions in both directions. This decoupling enables high throughput and efficient use of bus bandwidth, which is critical in complex SoC architectures.
+
 
 \sh{AXI Channels}
 The AXI4 protocol defines five distinct channels to support read and write transactions. Each channel consists of a set of signals that are valid for a single transfer direction. The channels are:
@@ -39,6 +41,7 @@ Read transactions follow a similar pattern but involve different channels. The m
 The separation of address and data channels for both read and write operations allows the interface to achieve high throughput and pipelined transaction handling. 
 All AXI channels use a handshake protocol based on \texttt{VALID} and \texttt{READY} signals. The master asserts \texttt{VALID} when data is ready to transfer, and the slave asserts \texttt{READY} when it can accept data. Data is transferred only when both signals are high, allowing flexible timing and preventing data loss.
 
+
 \sh{Transactions}
 In the AXI protocol, a \textbf{transfer} is a single exchange of information that completes with one \texttt{VALID} and \texttt{READY} handshake between the master and the slave. In contrast, a \textbf{transaction} is a full operation consisting of multiple transfers. It includes an address transfer, one or more data transfers, and, in the case of write operations, a response transfer.
 
@@ -51,6 +54,7 @@ Each transaction includes attributes that define its behavior, such as the numbe
     \item \textbf{AxBURST} (\texttt{[1:0]}): Indicates the burst type, which controls how addresses are generated within a burst.
 \end{itemize}
 
+
 \sh{Burst Types}
 AXI4 supports three main types of burst transfers, as defined by the \texttt{AxBURST} signal:
 
@@ -61,8 +65,10 @@ AXI4 supports three main types of burst transfers, as defined by the \texttt{AxB
     \item \textbf{RESERVED (0b11)}: This encoding is reserved and should not be used.
 \end{itemize}
 
+
 \sh{Advantages}
 To summarize, AXI4 incorporates several key features that make it well-suited for high-performance systems. One of its core advantages is the use of independent read and write channels, which allows these operations to be carried out concurrently, thereby increasing overall throughput. Additionally, AXI4 supports multiple outstanding transactions, enabling masters to issue several requests without needing to wait for prior transactions to complete. The protocol also permits out-of-order completion of responses, granting flexibility in how slaves manage and return data. Efficient data transfer is further achieved through the use of burst transactions, which allow multiple data beats to be sent in a single transfer. Moreover, AXI4 does not impose a strict timing relationship between the address and data phases, offering greater design flexibility. Finally, all communication channels rely on a straightforward two-way handshake protocol, utilizing the \texttt{VALID} and \texttt{READY} signals for effective flow control.
+
 
 \sh{AXI4-Lite and AXI4-Stream}
 AXI4-Lite is a simplified subset of AXI4, supporting only single, non-burst transactions. It is primarily used for register access and control/status registers, where low complexity and minimal logic overhead are preferred.
