@@ -6,7 +6,7 @@ The proposed NoC architecture in Fig.~\ref{fig:System_Architecture} is designed 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\textwidth]{img/System Architecture.png}
-    \caption{System architecture\TODO{ar}}
+    \caption{System architecture}
     \label{fig:System_Architecture}
 \end{figure}
 
@@ -48,6 +48,7 @@ The slave-side NI (see Figure~\ref{fig:slave_NI}), on the other hand, unpacks No
 This mechanism guarantees that QoS policies are consistently enforced across both request and response paths, thereby maintaining end-to-end service differentiation in the NoC.
 
 \begin{figure}[htbp]
+    \centering
     % Left image
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
@@ -63,7 +64,10 @@ This mechanism guarantees that QoS policies are consistently enforced across bot
         \caption{Slave-side NI architecture}
         \label{fig:slave_NI}
     \end{subfigure}
+    \caption{Network Interface architectures for master and slave sides}
+    \label{fig:NI_architectures}
 \end{figure}
+
 
 
 \sh{QoS Inheritance}\label{qos_inheritance}
@@ -79,6 +83,14 @@ To efficiently support heterogeneous QoS requirements, the NoC employs a dual-su
 The separation into VC and TDM subnetworks prevents interference between different QoS services and allows resources to be allocated more effectively.
 
 
+\sh{Flow Control Mechanisms in VC Subnetwork}  
+To manage virtual channel (VC) allocation and arbitration between latency-critical (LCS) and best-effort (URS) packets, four distinct flow control schemes are proposed. The \textit{Individual} scheme assigns dedicated VCs to each virtual network (VN), with LCS packets given higher priority. In the \textit{Individual\_Shared} scheme, all VCs are accessible to LCS packets, while URS packets are confined to a single fixed VC; LCS traffic continues to receive preferential treatment. The \textit{Total\_Shared} scheme allows both LCS and URS packets to share all VCs, although LCS packets are still prioritized during arbitration. Finally, the \textit{Standard} scheme treats all packets equally, with no prioritization across shared VCs. Among these, experimental evaluations indicate that the \textit{Individual\_Shared} scheme delivers the most favorable latency performance for LCS traffic.
+
+
+\sh{Static Routing in TDM Subnetwork}  
+The time-division multiplexing (TDM) subnetwork employs a static routing strategy based on a time-slot-driven routing table, which is constructed using a depth-first search algorithm. This approach enables the precomputation of routing paths, thereby eliminating runtime contention. Each router operates with synchronized time slots to deterministically forward packets, ensuring consistent and predictable delivery. The routing algorithm is designed to support round-trip communication while maintaining guaranteed bandwidth for streaming traffic. As a result, this static routing mechanism effectively minimizes latency and upholds the quality-of-service (QoS) requirements for guaranteed-rate service (GRS) flows.
+
+
 \sh{Traffic Converter}
 A key element of the NI is the \textit{Traffic Converter}, which dynamically balances the load between the two subnetworks: the VC (Virtual Channel) subnetwork and the TDM (Time-Division Multiplexing) subnetwork.
 \begin{itemize}
@@ -86,3 +98,4 @@ A key element of the NI is the \textit{Traffic Converter}, which dynamically bal
     \item \textbf{TDM to VC Conversion:} If the \ref{TDM} subnetwork is congested and VC is underutilized, GRS packets may be offloaded to the VC subnetwork. A controller estimates the queuing delay and determines whether rerouting will reduce latency. Converted packets are stored in the LCS\_GRS FIFO and fairly arbitrated with native LCS traffic.
 \end{itemize}
 This bidirectional conversion mechanism is implemented after the switch-to-NoC unit and before packetization, allowing real-time traffic adaptation. It improves overall utilization, reduces packet latency, and enhances throughput while maintaining QoS guarantees across traffic classes.
+
