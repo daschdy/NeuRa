@@ -16,13 +16,13 @@ The proposed NoC architecture in Fig.~\ref{fig:System_Architecture} is designed 
     \item \textbf{Unspecified-Rate Service (URS):}\label{URS} A best-effort service that relies on currently available resources. It provides neither guaranteed bandwidth nor low latency, but aims at fairness among flows. URS is suitable for I/O interfaces such as SATA or USB.
 \end{itemize}
 
-To accommodate these QoS requirements, the system architecture is divided into three main components: (i) AXI4-based master/slave nodes, (ii) network interfaces (NIs) that perform protocol \ref{msg_conversion} and QoS mapping, and (iii) the NoC fabric itself, which consists of two subnetworks: a VC-based subnetwork for \ref{LCS} and \ref{URS} traffic, and a TDM-based subnetwork for \ref{GRS} traffic. 
+To accommodate these QoS requirements, the system architecture is divided into three main components: (i) AXI4-based master/slave nodes, (ii) network interfaces (NIs) that perform protocol message conversion and QoS mapping, and (iii) the NoC fabric itself, which consists of two subnetworks: a VC-based subnetwork for LCS and URS traffic, and a TDM-based subnetwork for GRS traffic. 
 This separation enables the NoC to meet diverse application needs without compromising performance or protocol compliance.
 
 
-\sh{Message Format Conversion}\label{msg_conversion}
+\sh{Message Format Conversion}
 Two approaches can be used for message format conversion in AXI4-based NoCs. The first is a direct mapping, where each of the five AXI4 channels is converted into a separate packet format. In this case, the NoC must provide five dedicated paths in both subnetworks, one for each AXI4 channel. Although this preserves the semantics of AXI4, it couples the NoC tightly to the protocol, reduces design flexibility, and leads to poor resource utilization due to missing resource sharing. 
-The second approach consolidates AXI4 transactions into four unified packet types: \textit{read request}, \textit{read response}, \textit{write request}, and \textit{write response}. These packets share the same NoC resources and are annotated with a QoS identifier (LCS, GRS, or URS), which determines whether they are routed through the \ref{VC} or \ref{TDM} subnetwork. This design choice decouples the NoC from the specifics of the AXI4 protocol, improves resource utilization, and enables compatibility with a wide range of interconnect architectures (e.g., buses or NoCs).
+The second approach consolidates AXI4 transactions into four unified packet types: \textit{read request}, \textit{read response}, \textit{write request}, and \textit{write response}. These packets share the same NoC resources and are annotated with a QoS identifier (LCS, GRS, or URS), which determines whether they are routed through the VC or TDM subnetwork. This design choice decouples the NoC from the specifics of the AXI4 protocol, improves resource utilization, and enables compatibility with a wide range of interconnect architectures (e.g., buses or NoCs).
 For these reasons, the authors adopt the second approach as the foundation of their high-performance and flexible AXI4-based NoC system. Based on this design, the network interface (NI) fulfills three core functionalities:
 \begin{enumerate}
     \item \textbf{Dispatching:} The NI receives signals from the AXI4 channels and NoC subnetworks. 
@@ -44,41 +44,38 @@ Figure~\ref{fig:message_format} illustrates this process. AXI4 transactions from
 
 \sh{Master-Side and Slave-Side NI Architecture}
 The master-side NI (see Figure~\ref{fig:master_NI}) converts AXI4 requests into NoC packets and assigns them to the appropriate subnetwork (VC or TDM) based on their QoS identifier (LCS, GRS, URS). It ensures that transactions are correctly encapsulated and routed to meet the QoS requirements of the originating master (e.g., CPU, GPU, I/O).
-The slave-side NI (see Figure~\ref{fig:slave_NI}), on the other hand, unpacks NoC packets into AXI4 responses and delivers them to the slave devices. Since AXI4 response signals do not carry QoS identifiers, the slave-side NI applies a \ref{qos_inheritance} mechanism, in which the response packet inherits the QoS class of its corresponding request. 
+The slave-side NI (see Figure~\ref{fig:slave_NI}), on the other hand, unpacks NoC packets into AXI4 responses and delivers them to the slave devices. Since AXI4 response signals do not carry QoS identifiers, the slave-side NI applies a QoS inheritance mechanism, in which the response packet inherits the QoS class of its corresponding request. 
 This mechanism guarantees that QoS policies are consistently enforced across both request and response paths, thereby maintaining end-to-end service differentiation in the NoC.
 
-\begin{figure}[htbp]
+\begin{figure}
     \centering
-    % Left image
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{img/Master-Side_NI.png}
-        \caption{Master-side NI architecture}
+        \caption{Master-Side NI architecture}
         \label{fig:master_NI}
     \end{subfigure}
     \hfill
-    % Right image
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{img/Slave-Side_NI.png}
-        \caption{Slave-side NI architecture}
+        \caption{Slave-Side NI architecture}
         \label{fig:slave_NI}
     \end{subfigure}
-    \caption{Network Interface architectures for master and slave sides}
-    \label{fig:NI_architectures}
+    \caption{Slave- and Master-Side NI Architectures}
+    \label{master_slave_ni}
 \end{figure}
 
 
-
-\sh{QoS Inheritance}\label{qos_inheritance}
+\sh{QoS Inheritance}
 Because AXI4 response signals do not include QoS identifiers, the NI implements a QoS inheritance mechanism: the response packets automatically inherit the QoS information of their corresponding request packets. This ensures consistent QoS handling across request/response transactions.
 
 
 \sh{Role of two Subnetworks (VC and TDM)}
 To efficiently support heterogeneous QoS requirements, the NoC employs a dual-subnetwork structure:
 \begin{itemize}
-    \item The \textbf{VC subnetwork}\label{VC} (Virtual Channel) is used for \ref{LCS} and \ref{URS} packets. It provides low-latency transmission for critical traffic and fair, best-effort service for background traffic. Several flow control schemes are supported, ranging from strictly separated VCs for different QoS classes to shared VC approaches with priority arbitration.
-    \item The \textbf{TDM subnetwork}\label{TDM} (Time Division Multiplexing) is dedicated to \ref{GRS} packets. By pre-allocating both paths and time slots, it guarantees bandwidth and ensures predictable latency for streaming traffic.
+    \item The \textbf{VC subnetwork} (Virtual Channel) is used for LCS and URS packets. It provides low-latency transmission for critical traffic and fair, best-effort service for background traffic. Several flow control schemes are supported, ranging from strictly separated VCs for different QoS classes to shared VC approaches with priority arbitration.
+    \item The \textbf{TDM subnetwork} (Time Division Multiplexing) is dedicated to GRS packets. By pre-allocating both paths and time slots, it guarantees bandwidth and ensures predictable latency for streaming traffic.
 \end{itemize}
 The separation into VC and TDM subnetworks prevents interference between different QoS services and allows resources to be allocated more effectively.
 
@@ -94,8 +91,8 @@ The time-division multiplexing (TDM) subnetwork employs a static routing strateg
 \sh{Traffic Converter}
 A key element of the NI is the \textit{Traffic Converter}, which dynamically balances the load between the two subnetworks: the VC (Virtual Channel) subnetwork and the TDM (Time-Division Multiplexing) subnetwork.
 \begin{itemize}
-    \item \textbf{VC to TDM Conversion:} When the \ref{VC} subnetwork experiences congestion, selected latency-critical (LCS) packets are redirected to the TDM subnetwork. These packets are stored in a dedicated FIFO (GRS\_LCS FIFO) and scheduled with lower priority than native guaranteed-rate (GRS) traffic to preserve bandwidth guarantees.
-    \item \textbf{TDM to VC Conversion:} If the \ref{TDM} subnetwork is congested and VC is underutilized, GRS packets may be offloaded to the VC subnetwork. A controller estimates the queuing delay and determines whether rerouting will reduce latency. Converted packets are stored in the LCS\_GRS FIFO and fairly arbitrated with native LCS traffic.
+    \item \textbf{VC to TDM Conversion:} When the VC subnetwork experiences congestion, selected latency-critical (LCS) packets are redirected to the TDM subnetwork. These packets are stored in a dedicated FIFO (GRS\_LCS FIFO) and scheduled with lower priority than native guaranteed-rate (GRS) traffic to preserve bandwidth guarantees.
+    \item \textbf{TDM to VC Conversion:} If the TDM subnetwork is congested and VC is underutilized, GRS packets may be offloaded to the VC subnetwork. A controller estimates the queuing delay and determines whether rerouting will reduce latency. Converted packets are stored in the LCS\_GRS FIFO and fairly arbitrated with native LCS traffic.
 \end{itemize}
 This bidirectional conversion mechanism is implemented after the switch-to-NoC unit and before packetization, allowing real-time traffic adaptation. It improves overall utilization, reduces packet latency, and enhances throughput while maintaining QoS guarantees across traffic classes.
 

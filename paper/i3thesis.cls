@@ -134,7 +134,7 @@
 \RequirePackage[font=small, labelfont=bf, labelsep=endash, margin=1cm]{caption}
 
 % Subfigures
-\RequirePackage[margin=0cm]{subfig}
+%\RequirePackage[margin=0cm]{subfig}
 
 % The "SI" and "num" commands for typesetting units
 %\RequirePackage[sepfour=true,tophrase=\dots,per=slash,obeyall]{siunitx}
