@@ -15,5 +15,15 @@ The proposed NoC architecture in Fig.~\ref{fig:System_Architecture} is designed 
     \item \textbf{Unspecified-Rate Service (URS):}\label{URS} A best-effort service that relies on currently available resources. It provides neither guaranteed bandwidth nor low latency, but aims at fairness among flows. URS is suitable for I/O interfaces such as SATA or USB.
 \end{itemize}
 
-To accommodate these QoS requirements, the system architecture is divided into three main components: (i) AXI4-based master/slave nodes, (ii) network interfaces (NIs) that perform protocol conversion and QoS mapping, and (iii) the NoC fabric itself, which consists of two subnetworks: a VC-based subnetwork for \ref{LCS} and \ref{URS} traffic, and a TDM-based subnetwork for \ref{GRS} traffic. 
+To accommodate these QoS requirements, the system architecture is divided into three main components: (i) AXI4-based master/slave nodes, (ii) network interfaces (NIs) that perform protocol \ref{msg_conversion} and QoS mapping, and (iii) the NoC fabric itself, which consists of two subnetworks: a VC-based subnetwork for \ref{LCS} and \ref{URS} traffic, and a TDM-based subnetwork for \ref{GRS} traffic. 
 This separation enables the NoC to meet diverse application needs without compromising performance or protocol compliance.
+
+\sh{Message Format Conversion}\label{msg_conversion}
+As shown in the grafic~\ref{fig:message_format} there are two options for the message format conversion. 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{img/Message format conversion.png}
+    \caption{System architecture\TODO{ar}}
+    \label{fig:message_format}
+\end{figure}
