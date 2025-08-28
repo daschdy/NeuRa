@@ -1,3 +1,29 @@
 \subsection{Experimental Results}
 
+\sh{Throughput}
+The proposed NoC architecture achieves high throughput compared with baseline designs. The upper bound analysis shows that the VC subnetwork reaches up to 12{,}288~Gb/s and the TDM subnetwork up to 7{,}364~Gb/s, giving a combined throughput of nearly 19{,}652~Gb/s (around 117~Gb/s per node). 
+The dual-subnetwork design with QoS-aware mechanisms enables efficient resource usage and sustains performance under uniform and non-uniform traffic patterns.
+
+\sh{Traffic Injection}
+A two-level Markov Modulated Process (MMP)-based traffic generator was employed to simulate realistic process/thread execution intervals and injection behavior. Experimental results show that traffic injection exhibits burstiness and suspension periods, closely resembling real workloads. Compared with traditional MMP models, the proposed generator more accurately reflects realistic traffic characteristics, showing intervals of both zero injection and high bursts.
+
+\sh{Resource Utilization}
+The average utilization of VC router ports increases from 4.4\% to 16.5\% as traffic grows, reaching saturation at around 60~Gb/s per node. The slot utilization of the TDM subnetwork is about 17.12\%, constrained by path establishment and deterministic routing. These utilization levels are considered efficient given hardware and contention limitations.
+
+\sh{Latency}
+Latency results demonstrate that QoS-aware flow control significantly reduces transfer delay. For latency-critical service (LCS) packets, the \textit{Individual\_shared} mechanism yields the lowest latencies, increasing only slightly from 21.2 to 25.3 cycles as injection rates grow from 12~Gb/s to 108~Gb/s. 
+Best-effort (URS) packets show higher delays, but the trade-off favors LCS performance. Increasing VC numbers can further reduce LCS latency (up to 23.5\% improvement), although excessive VCs may cause arbitration overhead.
+
+\sh{Performance of Traffic Conversion}
+The traffic converter balances load between the VC and TDM subnetworks. 
+Two scenarios were evaluated:
+\begin{itemize}
+    \item Converting LCS packets to GRS traffic reduces average LCS latency in the VC 
+    subnetwork from over 1000 cycles to below 65 cycles, while also improving URS latency.
+    \item Converting GRS packets to LCS-oriented VC paths reduces queuing delays in the 
+    TDM subnetwork, lowering average latency from 180 cycles to 35 cycles without 
+    significantly affecting LCS/URS packets.
+\end{itemize}
+This mechanism improves both throughput and latency, achieving up to 93.85\% performance improvement compared with static QoS approaches.
+
 
