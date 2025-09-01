@@ -1,4 +1,4 @@
-\subsection{Simulator}
+\section{Custom Simulator}
 The authors developed a custom simulator, shown in Fig.~\ref{fig:simulator_architecture} that supports AXI4, a dual-subnetwork NoC architecture, and three QoS schemes simultaneously. The simulator is built upon the well-known \textit{BookSim2}\TODO{add reference} and \textit{Gem5}\TODO{add reference} frameworks.
 The implementation, written in C++, models a system consisting of 168 nodes, two subnetworks, and eight off-chip memory controllers. The design is divided into four identical subareas, each organized as a $7 \times 6$ mesh structure, where every node is connected to a router.
 Each node comprises a processor, a private L1 cache, a shared L2 cache, and both a master-side and slave-side network interface (NI). Consequently, every node is capable of functioning simultaneously as a master and a slave. Additionally, each subarea includes two off-chip memory controllers, which are connected to the central routers within the subarea.
