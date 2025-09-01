@@ -78,7 +78,7 @@ To efficiently support heterogeneous QoS requirements, the NoC employs a dual-su
 The separation into VC and TDM subnetworks prevents interference between different QoS services and allows resources to be allocated more effectively.
 
 
-\sh{Flow Control Mechanisms in VC Subnetwork}  
+\sh{Flow Control Mechanisms in VC Subnetwork}
 To manage virtual channel (VC) allocation and arbitration between latency-critical (LCS) and best-effort (URS) packets, four distinct flow control schemes are proposed. The \textit{Individual} scheme assigns dedicated VCs to each virtual network (VN), with LCS packets given higher priority. In the \textit{Individual\_Shared} scheme, all VCs are accessible to LCS packets, while URS packets are confined to a single fixed VC; LCS traffic continues to receive preferential treatment. The \textit{Total\_Shared} scheme allows both LCS and URS packets to share all VCs, although LCS packets are still prioritized during arbitration. Finally, the \textit{Standard} scheme treats all packets equally, with no prioritization across shared VCs. Among these, experimental evaluations indicate that the \textit{Individual\_Shared} scheme delivers the most favorable latency performance for LCS traffic.
 
 

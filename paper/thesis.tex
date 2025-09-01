@@ -12,9 +12,36 @@
 %\usepackage[babel=true]{csquotes}
 %\usepackage[backend=biber,style=ieee]{biblatex}
 
-%% CUSTOM PACKAGES %%
+%% ----------------------------------- %%
+
+%% CUSTOM
+% for figures
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{tocloft}
+
+% subchapters in capital
+\newcommand{\sh}[1]{%
+  \vspace{1em}%
+  \noindent\MakeUppercase{#1}\\%
+}
+
+% acronyms
+\newcommand{\listofacronyms}{%
+  \chapter*{\glossarytitlename}%
+  \addcontentsline{toc}{chapter}{\glossarytitlename}%
+  \begin{acronym}[XXXX] % Longest acronym for alignment
+    % The acronyms will be listed here
+  \end{acronym}%
+}
+
+\renewcommand{\acronymname}{\glossarytitlename}
+\renewcommand{\acronymfont}[1]{\textbf{#1}}
+\setlength{\acronymindent}{0em}
+\setlength{\acronymlabelwidth}{4em}
+\setlength{\acronymlabelsep}{1em}
+
+%% ----------------------------------- %%
 
 \author{Dustin Heither}
 \title{Flexible and Efficient QoS Provisioning in AXI4-Based Network-on-Chip Architecture - A brief comprehension}
@@ -27,15 +54,6 @@
 
 \addbibresource{thesis.bib}
 \graphicspath{{images/},{pictures/}}
-
-%%%---------ADD EVALUATION-----------------------------------
-%\newcommand*{\WITHEVALUATION}{}%
-
-%%% Custom Functions
-\newcommand{\sh}[1]{%
-  \vspace{1em}%
-  \noindent\MakeUppercase{#1}\\%
-}
 
 %%%
 \begin{document}
@@ -53,6 +71,10 @@
 \tableofcontents
 
 \cleardoublepage
+\listofacronyms
+\input{paper/acronym}
+
+\cleardoublepage
 \pagenumbering{arabic}
 
 \input{paper/1-0-introduction}
@@ -65,22 +87,12 @@
 
 \input{paper/5-0-conclusion}
 
-%\input{fundamentals}
-
-%\input{method}
-
-%\input{implementation}
 
 \ifdefined\WITHEVALUATION
 %\input{evaluation}
 \fi
 
-%\input{conclusion}
-
 \cleardoublepage
-
-%\input{glossary}
-\clearpage
 
 \listoffigures
 \clearpage
