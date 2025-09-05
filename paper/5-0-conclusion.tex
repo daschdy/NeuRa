@@ -2,18 +2,22 @@
 
 \sh{Conclusion}
 In this paper, a flexible and efficient QoS provisioning scheme was presented for AXI4-based NoC architectures. The proposed design introduces a network interface (NI) capable of AXI4-to-packet conversion, a QoS inheritance mechanism for round-trip support, and a dual-subnetwork structure consisting of a VC-based wormhole network and a TDM-based virtual-circuit network.  
+
 Experimental results demonstrate that the architecture achieves high throughput (up to 19{,}652~Gb/s), low latency for latency-critical flows, and effective traffic balancing through a traffic converter. The system therefore satisfies heterogeneous QoS requirements for CPU-like, GPU-like, and I/O devices within a single unified architecture.
 
 \sh{Critical Reflection}
-Although the proposed approach successfully supports three distinct QoS schemes and offers clear performance benefits, several limitations remain:  
+Although the proposed approach successfully supports three distinct QoS schemes and offers clear performance benefits, several limitations remain:
+
 \begin{itemize}
     \item \textbf{Complexity:} The introduction of dual subnetworks and traffic converters increases hardware and design complexity, potentially impacting scalability and implementation cost.  
     \item \textbf{Simulation scope:} Experiments relied on synthetic traffic generators; while the two-level MMP model is more realistic than conventional models, validation under full application-driven benchmarks (e.g., real workloads) remains necessary.  
     \item \textbf{Dynamic adaptability:} The traffic converter relies on predefined thresholds and rules for switching packets between subnetworks. More advanced, runtime-adaptive methods (e.g., machine learning-based controllers) could further optimize latency and throughput.  
 \end{itemize}
+
 These points highlight promising directions for extending the system towards industrial deployment and real-world applications.
 
 \sh{Evaluation}
 Overall, the paper makes a strong contribution by bridging the gap between the AXI4 protocol’s QoS requirements and efficient NoC design. Compared to existing works, it uniquely integrates three QoS services, a robust NI design, and an effective load-balancing mechanism. The experimental evaluation shows tangible performance improvements with reasonable hardware overhead. 
+
 However, the work could be strengthened by including comparisons against more application-specific benchmarks, a deeper analysis of area/power trade-offs, and implementation studies in advanced process technologies.  
 Despite these limitations, the architecture establishes a flexible framework for next-generation SoCs where heterogeneous cores and devices demand simultaneous support for low latency, guaranteed bandwidth, and best-effort services. It therefore represents a valuable step towards scalable and QoS-aware NoC-based communication infrastructures.
