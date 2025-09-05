@@ -1,12 +1,17 @@
 \section{Related Work}
 
+% Keep this chapter shorter
+\iffalse
 \sh{AXI4-Based Communication Support}
-Several studies have attempted to adapt the AXI4 protocol to NoC-based communication. For instance, Kwon et al.\cite{yang_nisar_2007} utilized in-network reorder buffers to meet ordering requirements, while Yang et al.\cite{kwon_-network_2009} designed AXI-compliant network interfaces for transaction reordering. Hybrid and debug-aware network interfaces have also been proposed. 
+Several studies have attempted to adapt the AXI4 protocol to NoC-based communication. For instance, Kwon et al.\cite{yang_nisar_2007} utilized in-network reorder buffers to meet ordering requirements, while Yang et al.\cite{kwon_-network_2009} designed AXI-compliant network interfaces for transaction reordering. Hybrid and debug-aware network interfaces have also been proposed.
+
 Other works explored FPGA-based AXI-NoC integration or backward compatibility with existing bus protocols. However, these approaches mostly focus on transaction ordering and do not address the crucial problem of message format conversion between AXI4 signals and NoC packets. Furthermore, they lack support for multiple QoS schemes, which are essential for diverse application demands.\footnote{For further related work, see Wang \& Lu [1, p. 1524, Sec. II-A].} 
 
 
 \sh{QoS Provisioning}
-QoS provisioning in NoCs has been widely studied, yet most solutions support only one or two QoS schemes. Sharifi et al.\cite{sharifi_addressing_2012} prioritized packets targeting idle memory banks, Chen et al.\cite{chen_round-trip_2017} introduced DRAM round-trip latency prediction to prioritize critical flows, and Liu et al.\cite{liu_highway_2015} proposed highway-based TDM NoCs for throughput improvements. Goossens et al.\cite{goossens_aethereal_2005} combined guaranteed and best-effort services. Nevertheless, these schemes remain limited and do not fully capture the multiple QoS requirements of AXI4-based systems, such as latency-critical CPUs, bandwidth-hungry GPUs, and best-effort I/O devices. 
+QoS provisioning in NoCs has been widely studied, yet most solutions support only one or two QoS schemes. Sharifi et al.\cite{sharifi_addressing_2012} prioritized packets targeting idle memory banks, Chen et al.\cite{chen_round-trip_2017} introduced DRAM round-trip latency prediction to prioritize critical flows, and Liu et al.\cite{liu_highway_2015} proposed highway-based TDM NoCs for throughput improvements. Goossens et al.\cite{goossens_aethereal_2005} combined guaranteed and best-effort services. 
+
+Nevertheless, these schemes remain limited and do not fully capture the multiple QoS requirements of AXI4-based systems, such as latency-critical CPUs, bandwidth-hungry GPUs, and best-effort I/O devices. 
 
 
 \sh{Flow Control}
@@ -18,19 +23,30 @@ Routing in TDM-based NoCs is a key challenge, where both path selection and time
 
 
 \sh{Router Microarchitecture Design}
-Router design strongly influences latency and throughput in NoCs. Proposals include distributed shared-buffer routers emulating output-buffer routers, low-latency wormhole routers, dynamic look-ahead bypass routers, fault-tolerant router designs, and lightweight runahead NoCs. Although these works improve efficiency, they primarily target generic NoCs and do not integrate AXI4-specific requirements or multi-QoS considerations.lly optimized for AXI4-based NoCs with heterogeneous QoS demands.\footnote{For further related work, see Wang \& Lu [1, p. 1524, Sec. II-E].} 
+Router design strongly influences latency and throughput in NoCs. Proposals include distributed shared-buffer routers emulating output-buffer routers, low-latency wormhole routers, dynamic look-ahead bypass routers, fault-tolerant router designs, and lightweight runahead NoCs.
+
+Although these works improve efficiency, they primarily target generic NoCs and do not integrate AXI4-specific requirements or multi-QoS considerations.lly optimized for AXI4-based NoCs with heterogeneous QoS demands.\footnote{For further related work, see Wang \& Lu [1, p. 1524, Sec. II-E].} 
 
 
 \sh{Industrial Designs for AXI4-Based QoS}
-Industry has developed several QoS-enabled AXI4-based systems. Xilinx’s Zynq-7000 devices provide per-transaction priority mechanisms, Synopsys DesignWare integrates QoS regulators and arbiters, and Intel’s Qsys interconnect uses flow controllers and bandwidth regulators. In the 5G domain, AXI4-compatible NoCs have been applied in baseband processing and low-latency switching devices. However, these industrial designs are often vendor-specific and do not provide detailed architectural insights or flexible multi-QoS support.\footnote{For further related work, see Wang \& Lu [1, p. 1524, Sec. II-F].}
+Industry has developed several QoS-enabled AXI4-based systems. Xilinx’s Zynq-7000 devices provide per-transaction priority mechanisms, Synopsys DesignWare integrates QoS regulators and arbiters, and Intel’s Qsys interconnect uses flow controllers and bandwidth regulators. In the 5G domain, AXI4-compatible NoCs have been applied in baseband processing and low-latency switching devices.
+
+However, these industrial designs are often vendor-specific and do not provide detailed architectural insights or flexible multi-QoS support.\footnote{For further related work, see Wang \& Lu [1, p. 1524, Sec. II-F].}
 
 
 \sh{Compared With Wang \& Lu's Previous Work}
-This article extends the authors’ earlier six-page conference paper. The initial work introduced the novel network interface design, the definition of QoS services, and a system simulator. The present article enhances this by proposing a traffic conversion mechanism for balancing \ac{VC} and \ac{TDM} subnetworks, exploring multiple flow control schemes, and introducing a two-level \ac{MMP}-based traffic generator for realistic workloads. Thus, it provides a more complete discussion, expanded experiments, and improved performance results.\footnote{For further related work, see Wang \& Lu [1, p. 1524, Sec. II-G].} 
+This article extends the authors’ earlier six-page conference paper. The initial work introduced the novel network interface design, the definition of QoS services, and a system simulator.
 
+The referred article enhances this by proposing a traffic conversion mechanism for balancing \ac{VC} and \ac{TDM} subnetworks, exploring multiple flow control schemes, and introducing a two-level \ac{MMP}-based traffic generator for realistic workloads.
+
+Thus, it provides a more complete discussion, expanded experiments, and improved performance results.\footnote{For further related work, see Wang \& Lu [1, p. 1524, Sec. II-G].} 
+\fi
+% Now its gettin' interessting
 
 \sh{Recent Publications}
-Since the publication of Wang and Lu work in 2022, several new contributions have emerged that are closely related to AXI4-based NoCs and QoS-aware architectures. PATRONoC introduces an open-source, fully AXI4-compliant NoC fabric specifically designed for multi-accelerator \ac{DNN} platforms. It demonstrates up to 34\% improved area efficiency and achieves between two- and eight-fold throughput improvements compared to state-of-the-art designs.\cite{jain_patronoc_2023} 
+Since the authors provided an overview of related work within their paper (see Wang \& Lu [p. 1524--1526, Sec. II]), therefore this chapter focuses on several new contributions that are closely related to AXI4-based NoCs and QoS-aware architectures.
+
+PATRONoC introduces an open-source, fully AXI4-compliant NoC fabric specifically designed for multi-accelerator \ac{DNN} platforms. It demonstrates up to 34\% improved area efficiency and achieves between two- and eight-fold throughput improvements compared to state-of-the-art designs.\cite{jain_patronoc_2023} 
 
 Another line of research is represented by FlooNoC, which has appeared in two iterations. The 2023 version presents a low-latency, wide-channel AXI4-compatible NoC, achieving 629\,Gbps per link at 1.23\,GHz in 12\,nm \ac{FinFET}\footnote{FinFET is a 3D transistor structure where the conducting channel is formed in a thin vertical “fin” of silicon. Unlike traditional planar MOSFETs, its gate wraps around multiple sides of the fin, providing better electrostatic control, reducing leakage current, and enabling higher switching speeds and energy efficiency at advanced technology nodes (e.g., 12 nm, 7 nm).} technology with only 10\% area overhead.\cite{fischer_floonoc_2023} 
 

@@ -1,7 +1,9 @@
-\section{Quality of Service (QoS)}
+\section{Quality of Service}
 
 \sh{What is Quality of Service in Networking?}
-\ac{QoS} refers to a set of technologies and techniques used in networking to manage traffic and ensure the efficient and predictable performance of critical applications. It allows organizations to prioritize certain types of traffic over others, ensuring that resource-intensive or time-sensitive services maintain high performance even under constrained bandwidth conditions. QoS is particularly important in networks that handle real-time data, such as \ac{IPTV}, online gaming, media streaming, video conferencing, \ac{VoD}, and \ac{VoIP}. By applying QoS policies, organizations can optimize the behavior of multiple applications, gaining visibility and control over network characteristics such as bit rate, jitter (see below at \ref{jitter}), packet loss, and latency.\cite{rhim_what_2024}\cite{hpe_juniper_networking_what_nodate}\cite{paloalto_networks_what_nodate}\cite{fortinet_what_nodate}
+\ac{QoS} refers to a set of technologies and techniques used in networking to manage traffic and ensure the efficient and predictable performance of critical applications. It allows organizations to prioritize certain types of traffic over others, ensuring that resource-intensive or time-sensitive services maintain high performance even under constrained bandwidth conditions.
+
+QoS is particularly important in networks that handle real-time data, such as \ac{IPTV}, online gaming, media streaming, video conferencing, \ac{VoD}, and \ac{VoIP}. By applying QoS policies, organizations can optimize the behavior of multiple applications, gaining visibility and control over network characteristics such as bit rate, jitter (see below at \ref{jitter}), packet loss, and latency.\cite{rhim_what_2024}\cite{hpe_juniper_networking_what_nodate}\cite{paloalto_networks_what_nodate}\cite{fortinet_what_nodate}
 
 
 \sh{Types of Traffic}
@@ -15,4 +17,8 @@ The implementation of QoS involves several key mechanisms. Traffic classificatio
 
 
 \sh{QoS Models}
-QoS can be implemented using several different models. The best-effort model provides no guarantees and treats all traffic equally, making it suitable only for non-critical applications.\cite{bruno_wan_2024} The \ac{IntServ} model offers strict QoS guarantees by reserving network resources for specific traffic flows using signaling protocols such as the Resource Reservation Protocol (RSVP).\cite{networklessons_introduction_nodate} In contrast, the \ac{DiffServ} model is more scalable and widely used in modern enterprise networks. DiffServ classifies and manages traffic into different service levels without requiring end-to-end signaling, allowing more flexible and efficient QoS implementation.\cite{bruno_wan_2024}
+QoS can be implemented using several different models. The best-effort model provides no guarantees and treats all traffic equally, making it suitable only for non-critical applications.\cite{bruno_wan_2024} 
+
+The \ac{IntServ} model offers strict QoS guarantees by reserving network resources for specific traffic flows using signaling protocols such as the Resource Reservation Protocol (RSVP).\cite{networklessons_introduction_nodate} 
+
+In contrast, the \ac{DiffServ} model is more scalable and widely used in modern enterprise networks. DiffServ classifies and manages traffic into different service levels without requiring end-to-end signaling, allowing more flexible and efficient QoS implementation.\cite{bruno_wan_2024}
