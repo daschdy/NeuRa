@@ -73,7 +73,7 @@ This mechanism guarantees that QoS policies are consistently enforced across bot
 Because AXI4 response signals do not include QoS identifiers, the NI implements a QoS inheritance mechanism: The response packets automatically inherit the QoS information of their corresponding request packets. This ensures consistent QoS handling across request/response transactions.
 
 
-\sh{Role of two Subnetworks (VC and TDM)}
+\sh{Role of two Subnetworks (VC \& TDM)}
 To efficiently support heterogeneous QoS requirements, the NoC employs a dual-subnetwork structure:
 
 \begin{itemize}
@@ -83,7 +83,12 @@ To efficiently support heterogeneous QoS requirements, the NoC employs a dual-su
 
 The separation into VC and TDM subnetworks prevents interference between different QoS services and allows resources to be allocated more effectively.
 
+The VC-based subnetwork employs several flow control policies that differ in how latency-critical and best-effort packets share virtual channels. Evaluations show that a hybrid scheme, where latency-critical traffic can access all VCs while best-effort traffic is limited to one, achieves the best latency–throughput balance.
 
+In the TDM subnetwork, static routing tables define contention-free paths based on precomputed schedules. Each router forwards packets synchronously according to assigned time slots, providing deterministic latency and guaranteed bandwidth for real-time flows.
+
+
+\iffalse
 \sh{Flow Control Mechanisms in VC Subnetwork}
 To manage \ac{VC} allocation and arbitration between latency-critical (LCS) and best-effort (URS) packets, four distinct flow control schemes are proposed. 
 
@@ -94,21 +99,29 @@ The \textit{Total\_Shared} scheme allows both LCS and URS packets to share all V
 Finally, the \textit{Standard} scheme treats all packets equally, with no prioritization across shared VCs. 
 
 Among these, experimental evaluations indicate that the \textit{Individual\_Shared} scheme delivers the most favorable latency performance for LCS traffic.
+\fi
 
-
+\iffalse
 \sh{Static Routing in TDM Subnetwork}  
 The \ac{TDM} subnetwork employs a static routing strategy based on a time-slot-driven routing table, which is constructed using a depth-first search algorithm. 
 This approach enables the precomputation of routing paths, thereby eliminating runtime contention. Each router operates with synchronized time slots to deterministically forward packets, ensuring consistent and predictable delivery. 
 The routing algorithm is designed to support round-trip communication while maintaining guaranteed bandwidth for streaming traffic. As a result, this static routing mechanism effectively minimizes latency and upholds the quality-of-service (QoS) requirements for guaranteed-rate service (GRS) flows.
-
+\fi
 
 \sh{Traffic Converter}
-A key element of the NI is the Traffic Converter, which dynamically balances the load between the two subnetworks: the \ac{VC} subnetwork and the \ac{TDM} subnetwork.
+A key element of the NI is the Traffic Converter (see figure~\ref{fig:traffic_conversion_unit}), which dynamically balances the load between the two subnetworks: the \ac{VC} subnetwork and the \ac{TDM} subnetwork.
 
 \begin{itemize}
     \item \textbf{VC to TDM Conversion:} When the VC subnetwork experiences congestion, selected latency-critical (LCS) packets are redirected to the TDM subnetwork. These packets are stored in a dedicated FIFO (GRS\_LCS FIFO) and scheduled with lower priority than native guaranteed-rate (GRS) traffic to preserve bandwidth guarantees.
     \item \textbf{TDM to VC Conversion:} If the TDM subnetwork is congested and VC is underutilized, GRS packets may be offloaded to the VC subnetwork. A controller estimates the queuing delay and determines whether rerouting will reduce latency. Converted packets are stored in the LCS\_GRS FIFO and fairly arbitrated with native LCS traffic.
 \end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{paper/img/Traffic-Conversion-Uni.png}
+    \caption{Traffic Conversion Unit}
+    \label{fig:traffic_conversion_unit}
+\end{figure}
 
 This bidirectional conversion mechanism is implemented after the switch-to-NoC unit and before packetization, allowing real-time traffic adaptation. It improves overall utilization, reduces packet latency, and enhances throughput while maintaining QoS guarantees across traffic classes.
 
