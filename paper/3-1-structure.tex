@@ -1,7 +1,7 @@
 \sh{Overall Structure}
 The following chapter summarizes the architecture proposed by Wang and Lu \cite{wang_flexible_2022}.
 
-The proposed NoC architecture in Fig.~\ref{fig:System_Architecture} is designed to support three distinct \ac{QoS}) schemes in order to satisfy the heterogeneous communication requirements of different AXI4 masters and slaves:
+The proposed NoC architecture in Figure~\ref{fig:System_Architecture} is designed to support three distinct \ac{QoS}) schemes in order to satisfy the heterogeneous communication requirements of different \ac{AXI4} masters and slaves:
 
 \begin{figure}[htbp]
     \centering
@@ -16,7 +16,7 @@ The proposed NoC architecture in Fig.~\ref{fig:System_Architecture} is designed 
     \item \ac{URS} A best-effort service that relies on currently available resources. It provides neither guaranteed bandwidth nor low latency, but aims at fairness among flows. URS is suitable for I/O interfaces such as SATA or USB.
 \end{itemize}
 
-To accommodate these QoS requirements, the system architecture is divided into three main components: (i) AXI4-based master/slave nodes, (ii) network interfaces that perform protocol message conversion and QoS mapping, and (iii) the NoC fabric itself, which consists of two subnetworks: a VC-based subnetwork for LCS and URS traffic, and a TDM-based subnetwork for GRS traffic. 
+To accommodate these QoS requirements, the system architecture is divided into three main components: (i) AXI4-based master/slave nodes, (ii) \acp{NI} that perform protocol message conversion and QoS mapping, and (iii) the \ac{NoC} fabric itself, which consists of two subnetworks: a VC-based subnetwork for LCS and URS traffic, and a TDM-based subnetwork for GRS traffic. 
 
 This separation enables the NoC to meet diverse application needs without compromising performance or protocol compliance.
 
@@ -33,7 +33,7 @@ For these reasons, the authors adopt the second approach as the foundation of th
     \item \textbf{QoS inheritance:} On the slave side, response packets inherit the QoS class of their corresponding requests. This ensures that QoS policies are consistently maintained across both request and response paths.
 \end{enumerate}
 
-Fig.~\ref{fig:message_format} illustrates this process. AXI4 transactions from the five original channels (read address, read data, write address, write data, write response) are mapped into four packet types, labeled with QoS information, and forwarded to the appropriate subnetwork. On the return path, the QoS inheritance mechanism guarantees end-to-end service differentiation across the NoC.
+Figure~\ref{fig:message_format} illustrates this process. AXI4 transactions from the five original channels (read address, read data, write address, write data, write response) are mapped into four packet types, labeled with QoS information, and forwarded to the appropriate subnetwork. On the return path, the QoS inheritance mechanism guarantees end-to-end service differentiation across the NoC.
 
 \begin{figure}[htbp]
     \centering
